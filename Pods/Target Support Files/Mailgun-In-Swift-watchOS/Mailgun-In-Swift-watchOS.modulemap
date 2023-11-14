@@ -1,0 +1,6 @@
+framework module Mailgun_In_Swift {
+  umbrella header "Mailgun-In-Swift-watchOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

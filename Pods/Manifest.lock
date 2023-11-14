@@ -1,0 +1,32 @@
+PODS:
+  - Alamofire (4.7.3)
+  - Mailgun-In-Swift (1.0.1):
+    - Alamofire
+    - ObjectMapper
+  - ObjectMapper (3.3.0)
+
+DEPENDENCIES:
+  - Mailgun-In-Swift (from `https://github.com/sakaar27/Mailgun-In-Swift`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - ObjectMapper
+
+EXTERNAL SOURCES:
+  Mailgun-In-Swift:
+    :git: https://github.com/sakaar27/Mailgun-In-Swift
+
+CHECKOUT OPTIONS:
+  Mailgun-In-Swift:
+    :commit: 5d6c05e6044825387d2d6eca58c26cce2586fd1b
+    :git: https://github.com/sakaar27/Mailgun-In-Swift
+
+SPEC CHECKSUMS:
+  Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  Mailgun-In-Swift: 00d81c033fec1b552187afb44ec6d5cd7b61ff74
+  ObjectMapper: b612bf8c8e99c4dc0bb6013a51f7c27966ed5da9
+
+PODFILE CHECKSUM: 7f7d5270dddbcbc39ee630aaef4b70d3e7630e54
+
+COCOAPODS: 1.5.3

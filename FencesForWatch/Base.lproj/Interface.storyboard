@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder.WatchKit.Storyboard" version="3.0" toolsVersion="14113" targetRuntime="watchKit" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="AgC-eL-Hgc">
+    <device id="watch42" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="watchOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBWatchKitPlugin" version="14033"/>
+    </dependencies>
+    <scenes>
+        <!--Interface Controller-->
+        <scene sceneID="aou-V4-d1y">
+            <objects>
+                <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="FencesForWatch_Extension">
+                    <items>
+                        <table alignment="left" id="1Lw-ow-gpN">
+                            <items>
+                                <tableRow identifier="FenceRow" id="Zow-wl-dUF" customClass="FenceRowController" customModule="FencesForWatch_Extension">
+                                    <group key="rootItem" width="1" height="0.0" alignment="left" spacing="6" id="5xp-vG-4gx">
+                                        <items>
+                                            <separator height="0.90000000000000002" heightAdjustment="-4" alignment="left" verticalAlignment="center" alpha="0.94999999999999996" id="GXK-tp-fgq">
+                                                <color key="color" red="1" green="0.069748602085306866" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </separator>
+                                            <group alignment="left" layout="vertical" spacing="1" id="RUw-7q-DyN">
+                                                <items>
+                                                    <group width="1" height="32" alignment="left" spacing="4" id="x4H-QL-2sU">
+                                                        <items>
+                                                            <label alignment="left" verticalAlignment="center" text="Label" id="IN9-Zr-K2Q">
+                                                                <fontDescription key="font" type="system" pointSize="12"/>
+                                                            </label>
+                                                            <label alignment="right" verticalAlignment="center" text="Label" id="OYF-Yi-gmT">
+                                                                <fontDescription key="font" type="system" pointSize="12"/>
+                                                            </label>
+                                                        </items>
+                                                    </group>
+                                                </items>
+                                            </group>
+                                        </items>
+                                    </group>
+                                    <connections>
+                                        <outlet property="radiusLabel" destination="OYF-Yi-gmT" id="C80-GY-25s"/>
+                                        <outlet property="titleLabel" destination="IN9-Zr-K2Q" id="Fe8-sk-GRZ"/>
+                                    </connections>
+                                </tableRow>
+                            </items>
+                        </table>
+                    </items>
+                    <menu key="menu" id="AXv-Mk-dk4">
+                        <items>
+                            <menuItem title="Start Fencing" icon="play" id="dVP-Fa-vAU">
+                                <connections>
+                                    <action selector="startFencing" destination="AgC-eL-Hgc" id="A9T-Dt-pF9"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Stop Fencing" icon="pause" id="Kjr-Ta-5uC">
+                                <connections>
+                                    <action selector="stopFencing" destination="AgC-eL-Hgc" id="xDV-pU-NgV"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Sync" icon="shuffle" id="Czr-3s-1vy">
+                                <connections>
+                                    <action selector="syncFences" destination="AgC-eL-Hgc" id="ade-pm-r2Y"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Remove Fences" icon="trash" id="Hu1-op-M49">
+                                <connections>
+                                    <action selector="removeFences" destination="AgC-eL-Hgc" id="GkB-hP-Z80"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                    <connections>
+                        <outlet property="fenceTable" destination="1Lw-ow-gpN" id="hWN-a6-RSK"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="220" y="345"/>
+        </scene>
+        <!--Fence-->
+        <scene sceneID="6NP-je-fsk">
+            <objects>
+                <controller identifier="Fence" id="Dym-qP-CnF" customClass="FenceInterfaceController" customModule="FencesForWatch_Extension">
+                    <items>
+                        <group width="1" height="46" alignment="left" id="37R-Rz-5xl">
+                            <items>
+                                <imageView width="40" height="40" alignment="left" image="AddPin" id="Mzw-yY-VWm"/>
+                                <group alignment="left" layout="vertical" spacing="0.0" id="b1M-Yz-Dfe">
+                                    <items>
+                                        <label alignment="center" text="Label" id="lgv-bC-OMp">
+                                            <color key="textColor" red="1" green="0.15196437922992978" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </label>
+                                        <label alignment="center" text="Label" id="EpA-EB-BBa"/>
+                                    </items>
+                                </group>
+                            </items>
+                            <edgeInsets key="margins" left="0.0" right="0.0" top="6" bottom="0.0"/>
+                        </group>
+                        <group width="1" height="53" alignment="left" layout="vertical" spacing="0.0" id="Tgu-49-9RB">
+                            <items>
+                                <label alignment="left" text="Entry:" minimumScaleFactor="0.0" id="xk3-bg-WrG">
+                                    <color key="textColor" red="0.39351323580067721" green="0.96271780628287096" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="font" type="system" pointSize="14"/>
+                                </label>
+                                <label alignment="left" text="Exit:" minimumScaleFactor="0.0" id="SVp-C7-6H3">
+                                    <color key="textColor" red="0.47742018663710406" green="0.85152259341833059" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="font" type="system" pointSize="14"/>
+                                </label>
+                                <label alignment="left" text="Email" minimumScaleFactor="0.0" id="ByX-Qo-jeY"/>
+                            </items>
+                        </group>
+                        <group width="1" alignment="left" layout="vertical" spacing="0.0" id="zXn-op-Lkv">
+                            <items>
+                                <label alignment="left" textAlignment="justified" numberOfLines="4" minimumScaleFactor="0.0" id="5f9-pR-Gim">
+                                    <color key="textColor" red="0.66422420739999999" green="0.66424006219999998" blue="0.66423153879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="font" type="system" pointSize="14"/>
+                                </label>
+                            </items>
+                        </group>
+                    </items>
+                    <connections>
+                        <outlet property="addressLabel" destination="5f9-pR-Gim" id="hjH-gf-qiy"/>
+                        <outlet property="emailLabel" destination="ByX-Qo-jeY" id="vWY-pN-2D2"/>
+                        <outlet property="noteEntryLabel" destination="xk3-bg-WrG" id="SSV-k1-rVc"/>
+                        <outlet property="noteExitLabel" destination="SVp-C7-6H3" id="T63-tY-DFG"/>
+                        <outlet property="radiusLabel" destination="EpA-EB-BBa" id="nvg-pD-Faq"/>
+                        <outlet property="titleLabel" destination="lgv-bC-OMp" id="OmJ-1V-c4i"/>
+                    </connections>
+                </controller>
+            </objects>
+            <point key="canvasLocation" x="469.89743589743591" y="342.17948717948718"/>
+        </scene>
+        <!--Static Notification Interface Controller-->
+        <scene sceneID="AEw-b0-oYE">
+            <objects>
+                <notificationController id="YCC-NB-fut">
+                    <items>
+                        <label alignment="left" text="Alert Label" id="IdU-wH-bcW"/>
+                    </items>
+                    <notificationCategory key="notificationCategory" identifier="myCategory" id="JfB-70-Muf"/>
+                    <connections>
+                        <outlet property="notificationAlertLabel" destination="IdU-wH-bcW" id="JKC-fr-R95"/>
+                        <segue destination="4sK-HA-Art" kind="relationship" relationship="dynamicNotificationInterface" id="kXh-Jw-8B1"/>
+                    </connections>
+                </notificationController>
+            </objects>
+            <point key="canvasLocation" x="220" y="643"/>
+        </scene>
+        <!--Notification Controller-->
+        <scene sceneID="ZPc-GJ-vnh">
+            <objects>
+                <controller id="4sK-HA-Art" customClass="NotificationController" customModule="FencesForWatch" customModuleProvider="target"/>
+            </objects>
+            <point key="canvasLocation" x="468" y="643"/>
+        </scene>
+    </scenes>
+</document>

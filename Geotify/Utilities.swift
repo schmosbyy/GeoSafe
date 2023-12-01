@@ -15,6 +15,7 @@ extension UIViewController {
 
 extension MKMapView {
   func zoomToUserLocation() {
+    print("zoom")
     guard let coordinate = userLocation.location?.coordinate else { return }
     let region = MKCoordinateRegionMakeWithDistance(coordinate, 600, 600)
     setRegion(region, animated: true)

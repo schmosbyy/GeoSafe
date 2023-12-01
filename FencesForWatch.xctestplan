@@ -1,0 +1,27 @@
+{
+  "configurations" : [
+    {
+      "id" : "145897FE-7537-4BA7-B802-974E1D75E184",
+      "name" : "Test Scheme Action",
+      "options" : {
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:Geotify.xcodeproj",
+          "identifier" : "D90CB64C1A739B7A00228A1F",
+          "name" : "GeoSafe"
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Geotify.xcodeproj",
+      "identifier" : "52939471212868D10089DB49",
+      "name" : "FencesForWatch"
+    }
+  },
+  "testTargets" : [
+
+  ],
+  "version" : 1
+}

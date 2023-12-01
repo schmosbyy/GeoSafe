@@ -1,0 +1,23 @@
+{
+  "configurations" : [
+    {
+      "id" : "B95260AE-58AE-443B-A6CB-9BFDA953708D",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Geotify.xcodeproj",
+      "identifier" : "D90CB64C1A739B7A00228A1F",
+      "name" : "GeoSafe"
+    }
+  },
+  "testTargets" : [
+
+  ],
+  "version" : 1
+}

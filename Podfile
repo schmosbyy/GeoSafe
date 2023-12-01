@@ -14,15 +14,15 @@ target 'FencesForWatch Extension' do
   use_frameworks!
 
   # Pods for FencesForWatch Extension
-    platform :watchos, '2.0'
-    pod 'Mailgun-In-Swift', :git => 'https://github.com/sakaar27/Mailgun-In-Swift'
+    platform :watchos, '4.3'
+    pod 'Mailgun-In-Swift'
 end
 
-target 'Geotify' do
+target 'GeoSafe' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for Geotify
-    platform :ios, '11.0'
-    pod 'Mailgun-In-Swift', :git => 'https://github.com/sakaar27/Mailgun-In-Swift'
+    platform :ios, '15.0'
+    pod 'Mailgun-In-Swift'
 end

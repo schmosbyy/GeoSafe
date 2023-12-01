@@ -10,10 +10,13 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
     
   }
     @IBOutlet var fenceTable: WKInterfaceTable!
-    let mailgun = MailgunAPI(apiKey: "35ab0ac8fd5adf15df234f6d78db7dd3-c1fe131e-f82271e8", clientDomain: "sandbox5467681c112e420b820525b8e397d34c.mailgun.org")
+    let mailgun = MailgunAPI(apiKey: "2d7691b4ba7eab24437f4bb963f523e3-5d2b1caa-9b6f1109", clientDomain: "sandbox238cdc08105048408942c6b1d34f21ba.mailgun.org")
   var fences: [FenceWatch] = []
   var session:WCSession?
   var flag = 0
+  var inFence:Bool = true
+  var isFunctionAllowed:Bool = true
+  var timer: Timer?
   func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
     flag = 1
     let radius = message["Radius"] as! Double
@@ -40,6 +43,7 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
     print("After Session Fences count =:\(fences.count)")
   }
     @IBAction func syncFences() {
+     
         updateRows()
         print(fences.count)
     
@@ -92,7 +96,7 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
   override func awake(withContext context: Any?) {
     super.awake(withContext: context)
     loadFences()
-    print(fences.count)
+    print("fences count :",fences.count)
     if WCSession.isSupported() {    //  it is supported
       session = WCSession.default
       session!.delegate = self
@@ -100,149 +104,105 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
     } else {
       print("Watch does not support WCSession")
     }
-    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-    locationManager.distanceFilter = 100
-    locationManager.allowsBackgroundLocationUpdates = true
     updateRows()
   }
   func getLocation(){
-    print("InterfaceController: \(NSDate())  - getLocation")
     locationManager.delegate = self
     locationManager.requestAlwaysAuthorization()
     locationManager.requestWhenInUseAuthorization()
     locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-    locationManager.startUpdatingLocation()
     locationManager.distanceFilter = 100
     locationManager.allowsBackgroundLocationUpdates = true
+    locationManager.startUpdatingLocation()
   }
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    print("InterfaceController: \(NSDate())  - locationManager didUpdateLocations")
     guard let mostRecentLocation = locations.last else { return }
     let place = mostRecentLocation.coordinate
-    print("\(place)")
     regionCompare(location: mostRecentLocation)
   }
-  var alert:Int = 20
-  var abc:Timer!
+
   func regionCompare(location:CLLocation){
     var distance:Double
+    var address:String = ""
     for fence in fences{
       let fenceLocation = CLLocation.init(latitude: fence.coordinate.latitude, longitude: fence.coordinate.longitude)
       distance=(location.distance(from: fenceLocation))
-      print("Distance is:\(distance)m")
-      print(fence.noteEntry)
+      address = "Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)"
       if (distance<fence.radius){
-        alert = 20
-        print("inside")
-        handleEvent(fence: fence)
+        inFence = true
+        handleEvent(fence: fence,location: address,inFence: inFence)
         Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.safeAlerts), userInfo: nil, repeats: false)
       }
-      if(distance>fence.radius && distance<fence.radius+120){
-        print("outside")
-        alert = 10
-        handleEvent(fence: fence)
+      if(distance>fence.radius && distance<fence.radius+500){
+        inFence = false
+        handleEvent(fence: fence,location: address,inFence: inFence)
         Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.calmAlerts), userInfo: nil, repeats: false)
         Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(self.calmAlerts), userInfo: nil, repeats: false)
         Timer.scheduledTimer(timeInterval: 90, target: self, selector: #selector(self.calmAlerts), userInfo: nil, repeats: false)
-        Timer.scheduledTimer(timeInterval: 120, target: self, selector: #selector(self.callAlert), userInfo: nil, repeats: false)
+        
       }
     }
-  }
-  @objc func callAlert(){
-    let phoneNumber = "tel://911"
-    call(phoneNumber: phoneNumber)
   }
   @objc func safeAlerts(){
-    
-    if #available(watchOSApplicationExtension 3.0, *) {
-      let center = UNUserNotificationCenter.current()
-      center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-      }
-      let content = UNMutableNotificationContent()
-      content.title = NSString.localizedUserNotificationString(forKey: "Be calm!", arguments: nil)
-      content.body = NSString.localizedUserNotificationString(forKey: "You are safe now!", arguments: nil)
-      content.sound = UNNotificationSound.default()
-      content.categoryIdentifier = "REMINDER_CATEGORY"
-      let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
-      let request = UNNotificationRequest.init(identifier: "FiveSecond", content: content, trigger: trigger)
-      print("Watch Notifications being called!")
-      center.add(request ,withCompletionHandler: nil)
-    }
+    triggerWatchAlert(title: NSString.localizedUserNotificationString(forKey: "Be Calm!", arguments: nil),message: NSString.localizedUserNotificationString(forKey: "You are safe now", arguments: nil))
   }
   @objc func calmAlerts(){
-    if #available(watchOSApplicationExtension 3.0, *) {
-      let center = UNUserNotificationCenter.current()
-      center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-      }
-      let content = UNMutableNotificationContent()
-      content.title = NSString.localizedUserNotificationString(forKey: "Be Calm!", arguments: nil)
-      content.body = NSString.localizedUserNotificationString(forKey: "You are going to be Alright.", arguments: nil)
-      content.sound = UNNotificationSound.default()
-      content.categoryIdentifier = "REMINDER_CATEGORY"
-      let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
-      let request = UNNotificationRequest.init(identifier: "FiveSecond", content: content, trigger: trigger)
-      print("Watch Notifications being called!")
-      center.add(request ,withCompletionHandler: nil)
-    }
+    triggerWatchAlert(title: NSString.localizedUserNotificationString(forKey: "Be Calm!", arguments: nil),message: NSString.localizedUserNotificationString(forKey: "You are going to be Alright.", arguments: nil))
   }
-  func call(phoneNumber: String) {
-    if let url = URL(string: phoneNumber) {
-      if #available(iOS 10, *) {
-        print("Calling 911")
-        WKExtension.shared().openSystemURL(url)
-      } else {
-        let success = WKExtension.shared().openSystemURL(url)
-        print("Calling 911")
-        print("Open \(phoneNumber): \(success)")
+  
+
+  @objc func enableFunction() {
+          // Re-enable the function after the cooldown period
+          isFunctionAllowed = true
+          print("Function is now allowed.")
       }
+  func handleEvent(fence: FenceWatch,location: String,inFence:Bool){
+    // Check if the function is allowed to execute
+    guard isFunctionAllowed else {
+        print("Function is blocked. Wait for the cooldown period.")
+        return
     }
-  }
-  func handleEvent(fence: FenceWatch){
-    
-    mailgun.sendEmail(to: fence.email, from: "Test User <test@Geofence.com>", subject: "patient is missing", bodyHTML: "<b>your patient is missing, The patient is currently at:<b>)") { mailgunResult in
+    isFunctionAllowed = false
+    print("Sending EMail: address = "+location)
+    mailgun.sendEmail(to: fence.email, from: "Test User <test@Geofence.com>", subject: "patient is missing", bodyHTML: "<b>your patient is missing, The patient is currently at:<b>\(location)</b>)") { [self] mailgunResult in
       if mailgunResult.success{
-        print("Email was sent")
-        print("for fence:\(fence.fenceTitle)")
+        print("Email sent for fence:\(fence.fenceTitle)")
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.enableFunction), userInfo: nil, repeats: false)
       }
       else{
         print("Fail")
       }
     }
- 
+    if inFence{
+      triggerWatchAlert(title: NSString.localizedUserNotificationString(forKey: "Alert!", arguments: nil),message: fence.noteEntry)
+    }else{
+      triggerWatchAlert(title: NSString.localizedUserNotificationString(forKey: "Alert!", arguments: nil),message: fence.noteExit)
+    }
+  }
+  func triggerWatchAlert(title: String, message: String){
     if #available(watchOSApplicationExtension 3.0, *) {
       let center = UNUserNotificationCenter.current()
       center.requestAuthorization(options: [.alert, .sound]) { (granted, error) in
       }
       let content = UNMutableNotificationContent()
-      content.title = NSString.localizedUserNotificationString(forKey: "Alert!", arguments: nil)
-      if alert==20{
-      content.body = NSString.localizedUserNotificationString(forKey: fence.noteEntry, arguments: nil)
-      }
-      else if alert==10{
-        content.body = NSString.localizedUserNotificationString(forKey: fence.noteExit, arguments: nil)
-      }
+      content.title = title
+      content.body = message
       content.sound = UNNotificationSound.default()
       content.categoryIdentifier = "REMINDER_CATEGORY"
       let trigger = UNTimeIntervalNotificationTrigger.init(timeInterval: 5, repeats: false)
       let request = UNNotificationRequest.init(identifier: "FiveSecond", content: content, trigger: trigger)
-      print("Watch Notifications being called!")
       center.add(request ,withCompletionHandler: nil)
-      print("Trying to sendEmail")
-    // mail()
-      print("email sending block passed")
+      print("Watch Notifications being called! and email sent : alert message :"+message)
     }
   }
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-    print("InterfaceController: \(NSDate())  - locationManager didFailWithError")
-    print("CL failed: \(error)")
+    //print("CL failed: \(error)")
   }
   override func willActivate() {
     super.willActivate()
     loadFences()
   }
-  
   override func didDeactivate() {
     super.didDeactivate()
   }
-  
 }

@@ -29,6 +29,13 @@ class FencesVC: UIViewController,WCSessionDelegate{
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     guard let mostRecentLocation = locations.last else { return }
     shareCoordinates = mostRecentLocation.coordinate
+    let region = MKCoordinateRegionMakeWithDistance(mostRecentLocation.coordinate, 500, 500)
+    mapView.setRegion(region, animated: true)
+        
+        // Optionally, you can add a pin for the current location
+    let annotation = MKPointAnnotation()
+    annotation.coordinate = mostRecentLocation.coordinate
+    mapView.addAnnotation(annotation)
   }
  @IBOutlet var mapView: MKMapView!
     var fences: [Fence] = []
@@ -50,6 +57,8 @@ class FencesVC: UIViewController,WCSessionDelegate{
     locationManager.distanceFilter = 50
     locationManager.allowsBackgroundLocationUpdates = true
     locationManager.pausesLocationUpdatesAutomatically = true
+    mapView.showsUserLocation = true
+    mapView.userTrackingMode = .follow
     loadFences()
   }
   
@@ -166,7 +175,6 @@ class FencesVC: UIViewController,WCSessionDelegate{
       }
     }
   }
-  
     @IBAction func syncFences(_ sender: Any) {
         let allFences = Fence.allFences()
         for fence in allFences{
@@ -192,6 +200,7 @@ class FencesVC: UIViewController,WCSessionDelegate{
   @IBAction func zoomToCurrentLocation(sender: AnyObject) {
     mapView.zoomToUserLocation()
   }
+  
   func region(with fence: Fence) -> CLCircularRegion {
     let region = CLCircularRegion(center: fence.coordinate, radius: fence.radius, identifier: fence.identifier)
     region.notifyOnEntry = true

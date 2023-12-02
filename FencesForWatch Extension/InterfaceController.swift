@@ -10,7 +10,7 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
     
   }
     @IBOutlet var fenceTable: WKInterfaceTable!
-    let mailgun = MailgunAPI(apiKey: "2d7691b4ba7eab24437f4bb963f523e3-5d2b1caa-9b6f1109", clientDomain: "sandbox238cdc08105048408942c6b1d34f21ba.mailgun.org")
+    let mailgun = MailgunAPI(apiKey: "", clientDomain: "")
   var fences: [FenceWatch] = []
   var session:WCSession?
   var flag = 0

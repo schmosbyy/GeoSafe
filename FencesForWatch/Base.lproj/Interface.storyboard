@@ -13,22 +13,16 @@
                     <items>
                         <group width="1" alignment="left" id="3zb-V9-2wM">
                             <items>
-                                <button width="70" alignment="left" title="Start" id="RMj-e1-aql">
+                                <button width="100" alignment="left" title="Start" id="RMj-e1-aql">
                                     <color key="titleColor" systemColor="systemGreenColor"/>
                                     <connections>
                                         <action selector="startFencing" destination="AgC-eL-Hgc" id="tSI-ge-szQ"/>
                                     </connections>
                                 </button>
-                                <button width="70" alignment="left" title="Stop" id="DSR-30-9Yp">
+                                <button width="100" alignment="right" title="Stop" id="DSR-30-9Yp">
                                     <color key="titleColor" systemColor="systemPinkColor"/>
                                     <connections>
                                         <action selector="stopFencing" destination="AgC-eL-Hgc" id="Rxk-RI-uLt"/>
-                                    </connections>
-                                </button>
-                                <button alignment="left" title="Sync" id="aGb-4C-N8q">
-                                    <color key="titleColor" systemColor="systemYellowColor"/>
-                                    <connections>
-                                        <action selector="syncFences" destination="AgC-eL-Hgc" id="0Zt-KN-nKd"/>
                                     </connections>
                                 </button>
                             </items>
@@ -156,9 +150,6 @@
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="0.91764705879999997" green="0.054901960780000002" blue="0.2901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -176,9 +176,17 @@ class FencesVC: UIViewController,WCSessionDelegate{
     }
   }
     @IBAction func syncFences(_ sender: Any) {
-        let allFences = Fence.allFences()
+      let allFences = Fence.allFences()
+      print("allFences: ",allFences.isEmpty)
+      if allFences.isEmpty{
+        let message : [String : AnyObject]
+        message = [
+            "FenceTitle":"NoFenceFound"
+        ] as [String : AnyObject]
+        session!.sendMessage(message, replyHandler: nil, errorHandler: nil)
+      }else{
         for fence in allFences{
-          if session!.isReachable {     //  it is reachable
+          if session!.isReachable {     // it is reachable
                 let message : [String : AnyObject]
                 message = [
                     "FenceTitle":fence.fenceTitle,
@@ -192,9 +200,10 @@ class FencesVC: UIViewController,WCSessionDelegate{
                     ] as [String : AnyObject]
                 session!.sendMessage(message, replyHandler: nil, errorHandler: nil)
                 print("Watch send gesture ")
-            } else{                     //  it is not reachable
-                print("WCSession is not reachable")
+            } else{
+                print("WCSession is not reachable") //it is not reachable
             }
+          }
         }
     }
   @IBAction func zoomToCurrentLocation(sender: AnyObject) {

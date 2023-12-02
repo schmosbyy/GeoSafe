@@ -10,7 +10,7 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
     
   }
     @IBOutlet var fenceTable: WKInterfaceTable!
-    let mailgun = MailgunAPI(apiKey: "", clientDomain: "")
+    let mailgun = MailgunAPI(apiKey: "2d7691b4ba7eab24437f4bb963f523e3-5d2b1caa-9b6f1109", clientDomain: "sandbox238cdc08105048408942c6b1d34f21ba.mailgun.org")
   var fences: [FenceWatch] = []
   var session:WCSession?
   var flag = 0
@@ -19,31 +19,37 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
   var timer: Timer?
   func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
     flag = 1
-    let radius = message["Radius"] as! Double
-    let noteEntry = message["NoteEntry"]  as! String
-    let noteExit = message["NoteExit"] as! String
-    let latitude = message["Latitude"] as! Double
-    let longitude = message["Longitude"] as! Double
     let fenceTitle = message["FenceTitle"] as! String
-    let email = message["Email"] as! String
-    let address = message["Address"] as! String
-    let coordinate=CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
-    let fence = FenceWatch.init(coordinate: coordinate, radius: radius,noteEntry: noteEntry, noteExit: noteExit,fenceTitle: fenceTitle,email: email,address: address)
-    print("adress is :\(address)")
-    for savedfences in fences{
-      if (savedfences.fenceTitle == fence.fenceTitle){
-          flag = 0
-      }
-    }
-    if (flag == 1){
-      fences.append(fence)
+    if(fenceTitle.contains("NoFenceFound")){
+      print("Syncing fences and deleting fences.")
+      fences.removeAll()
       saveFences()
+      updateRows()
+    }else{
+      let radius = message["Radius"] as! Double
+      let noteEntry = message["NoteEntry"]  as! String
+      let noteExit = message["NoteExit"] as! String
+      let latitude = message["Latitude"] as! Double
+      let longitude = message["Longitude"] as! Double
+      let email = message["Email"] as! String
+      let address = message["Address"] as! String
+      let coordinate=CLLocationCoordinate2D.init(latitude: latitude, longitude: longitude)
+      let fence = FenceWatch.init(coordinate: coordinate, radius: radius,noteEntry: noteEntry, noteExit: noteExit,fenceTitle: fenceTitle,email: email,address: address)
+      print("adress is :\(address)")
+      for savedfences in fences{
+        if (savedfences.fenceTitle == fence.fenceTitle){
+            flag = 0
+        }
+      }
+      if (flag == 1){
+        fences.append(fence)
+        saveFences()
+      }
+      updateRows()
+      print("After Session Fences count =:\(fences.count)")
     }
-    updateRows()
-    print("After Session Fences count =:\(fences.count)")
   }
     @IBAction func syncFences() {
-     
         updateRows()
         print(fences.count)
     
@@ -139,7 +145,6 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
         Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(self.calmAlerts), userInfo: nil, repeats: false)
         Timer.scheduledTimer(timeInterval: 60, target: self, selector: #selector(self.calmAlerts), userInfo: nil, repeats: false)
         Timer.scheduledTimer(timeInterval: 90, target: self, selector: #selector(self.calmAlerts), userInfo: nil, repeats: false)
-        
       }
     }
   }

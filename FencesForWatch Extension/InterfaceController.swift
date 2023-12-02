@@ -49,11 +49,7 @@ class InterfaceController: WKInterfaceController, CLLocationManagerDelegate ,UNU
       print("After Session Fences count =:\(fences.count)")
     }
   }
-    @IBAction func syncFences() {
-        updateRows()
-        print(fences.count)
-    
-    }
+ 
     
     @IBAction func removeFences() {
         fences.removeAll()
